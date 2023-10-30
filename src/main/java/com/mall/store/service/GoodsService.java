@@ -6,6 +6,9 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.mall.store.dto.request.GoodsRequestDto;
@@ -30,6 +33,12 @@ public class GoodsService {
                 .filter(it -> it.getName() != null)
                 .map(GoodsDto::form)
                 .collect(Collectors.toList());
+    }
+
+    public Page<GoodsDto> getPage(int size, int page) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Goods> pageGoods = goodsRepository.findAll(pageable);
+        return pageGoods.map(GoodsDto::form);
     }
 
     public void createGood(GoodsRequestDto goodsDto) {
