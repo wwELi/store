@@ -1,0 +1,2 @@
+ALTER TABLE goods
+ADD COLUMN supplier_id VARCHAR(255);

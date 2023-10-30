@@ -33,4 +33,10 @@ public class GoodsController {
     public void create(@Valid @RequestBody GoodsRequestDto goodsRequestDto) {
         goodsService.createGood(goodsRequestDto);
     }
+
+    @GetMapping(value="/names")
+    public String getGoodsNames() {
+        return goodsService.genGoodsName();
+    }
+    
 }

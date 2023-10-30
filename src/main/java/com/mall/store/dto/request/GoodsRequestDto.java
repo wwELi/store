@@ -13,4 +13,6 @@ public class GoodsRequestDto {
 
     @NotNull
     private Double price;
+
+    private String supplierId;
 }
