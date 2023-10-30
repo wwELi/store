@@ -38,6 +38,7 @@ public class GoodsService {
 
         Goods goods = new Goods();
         goods.setName(goodsDto.getName());
+        goods.setGoodsPrice(goodsDto.getPrice());
         goods.setCreateTime(new Date());
         goodsRepository.save(goods);
     }

@@ -1,5 +1,6 @@
 package com.mall.store.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -14,4 +15,6 @@ public class Goods {
     private Long id;
     private String name;
     private java.util.Date createTime;
+    @Column(name = "price")
+    private Double goodsPrice;
 }

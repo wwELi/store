@@ -9,5 +9,8 @@ public class GoodsRequestDto {
 
     @NotNull(message = "must name must have")
     @NotBlank
-    private String name;   
+    private String name;
+
+    @NotNull
+    private Double price;
 }
