@@ -4,11 +4,15 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
-import org.apache.commons.csv.QuoteMode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -42,6 +46,7 @@ public class SupplierService {
                 CSVParser csvParser = new CSVParser(reader, csvFormat)) {
             for (CSVRecord csvRecord : csvParser.getRecords()) {
                 Supplier supplier = new Supplier();
+                supplier.setCreateTime(new Date());
                 supplier.setName(csvRecord.get("name"));
                 supplier.setAddress(csvRecord.get("address"));
                 supplier.setTell(csvRecord.get("tell"));
@@ -49,6 +54,15 @@ public class SupplierService {
             }
         }
 
-        supplierRepository.saveAll(suppliers);
+        Collection<Supplier> list = suppliers.stream()
+                .collect(Collectors.toMap(Supplier::getName, it -> it, (existing, replacement) -> existing))
+                .values();
+
+        List<String> names = list.stream().map(Supplier::getName).collect(Collectors.toList());
+        List<Supplier> supplierList = supplierRepository.findByNameIn(names.toArray(new String[names.size()]));
+        Set<String> nameSet = supplierList.stream().map(Supplier::getName).collect(Collectors.toSet());
+        List<Supplier> savedSuppliers = list.stream().filter(it -> !nameSet.contains(it.getName())).toList();
+
+        supplierRepository.saveAll(savedSuppliers);
     }
 }
