@@ -31,7 +31,7 @@ public class SupplierService {
         supplierRepository.save(supplier);
     }
 
-    public void upload(MultipartFile file) throws IOException {
+    public List<Supplier> upload(MultipartFile file) throws IOException {
         if (file.isEmpty()) {
             throw new RuntimeException("no file upload");
         }
@@ -64,5 +64,6 @@ public class SupplierService {
         List<Supplier> savedSuppliers = list.stream().filter(it -> !nameSet.contains(it.getName())).toList();
 
         supplierRepository.saveAll(savedSuppliers);
+        return savedSuppliers;
     }
 }
